@@ -1,0 +1,2 @@
+# CollectCoordinate
+使用高德定位采集GPS坐标数据，支持在地图上可视化绘制出轨迹
