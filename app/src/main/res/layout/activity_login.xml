@@ -112,7 +112,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
         android:background="@color/color_light_white"
-        android:text="登  录"
+        android:text="开始采集"
         android:textColor="@color/color_blue"
         android:textSize="23sp"
         android:gravity="center" />

@@ -1,13 +1,16 @@
 package com.geocompass.collect.coordinate.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,44 +21,32 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.geocompass.collect.coordinate.Constants;
 import com.geocompass.collect.coordinate.R;
+import com.geocompass.collect.util.AppUtils;
 import com.geocompass.collect.util.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.geocompass.collect.coordinate.activity.SettingActivity.PREFERENCE_LINK;
 
-
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText mEtUsername, mEtPass, mEtId;
     private String mInputUser, mInputPass, mInputId;
-    public static final String INPUT_ID = "id";
-    public static final String PREFERENCE_USERNAME="preference_username";
-    public static final String PREFERENCE_PASS="preference_pass";
-    public static final String PREFERENCE_ID="preference_id";
-    private static final int PERMISSION_REQUEST_CODE = 0x111;
-    public static final String SERVICE="ws://219.234.147.220:61623";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         checkPermission();
-        //透明状态栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
         SharedPreferencesUtils.init(LoginActivity.this);
 
         initView();
         readFromSharedPreference();
-        SharedPreferencesUtils.putString(PREFERENCE_LINK,SERVICE);
+        judgeAppRun();
+        SharedPreferencesUtils.getString(Constants.PREFERENCE_LINK, Constants.SERVICE);
+
     }
 
     @Override
@@ -87,28 +78,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (checkAccountInput()) {
             saveToSharedPreference();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra(INPUT_ID, mInputId);
+//            intent.putExtra(Constants.INPUT_ID, mInputId);
             startActivity(intent);
             readFromSharedPreference();
         }
     }
 
-    private void saveToSharedPreference() {
-        SharedPreferencesUtils.putString(PREFERENCE_USERNAME,mInputUser);
-        SharedPreferencesUtils.putString(PREFERENCE_PASS,mInputPass);
-        SharedPreferencesUtils.putString(PREFERENCE_ID,mInputId);
+    /**
+     * 判断MQTTService是否运行，若运行直接跳到MainActivity
+     */
+    private void judgeAppRun() {
+        boolean isRun = AppUtils.isServiceRunning(LoginActivity.this, this.getResources().getString(R.string.MQTTService_name));
+        if (isRun) {
+            login();
+        }
     }
+
+    private void saveToSharedPreference() {
+        SharedPreferencesUtils.putString(Constants.PREFERENCE_USERNAME, mInputUser);
+        SharedPreferencesUtils.putString(Constants.PREFERENCE_PASS, mInputPass);
+        SharedPreferencesUtils.putString(Constants.PREFERENCE_ID, mInputId);
+    }
+
     private void readFromSharedPreference() {
-        String user = SharedPreferencesUtils.getString(PREFERENCE_USERNAME,"");
-        if(!user.trim().isEmpty()){
+        String user = SharedPreferencesUtils.getString(Constants.PREFERENCE_USERNAME, "");
+        if (!user.trim().isEmpty()) {
             mEtUsername.setText(user);
         }
-        String pass = SharedPreferencesUtils.getString(PREFERENCE_PASS,"");
-        if(!pass.trim().isEmpty()){
+        String pass = SharedPreferencesUtils.getString(Constants.PREFERENCE_PASS, "");
+        if (!pass.trim().isEmpty()) {
             mEtPass.setText(pass);
         }
-        String id = SharedPreferencesUtils.getString(PREFERENCE_ID,"");
-        if(!id.trim().isEmpty()){
+        String id = SharedPreferencesUtils.getString(Constants.PREFERENCE_ID, "");
+        if (!id.trim().isEmpty()) {
             mEtId.setText(id);
         }
 
@@ -133,7 +135,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         return true;
     }
-    private boolean checkPermission(){
+
+
+    private boolean checkPermission() {
         List<String> permissionList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -154,16 +158,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         if (!permissionList.isEmpty()) {
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(LoginActivity.this, permissions, PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(LoginActivity.this, permissions, Constants.PERMISSION_REQUEST_CODE);
             return false;
         } else {
             return true;
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE) {
+        if (requestCode == Constants.PERMISSION_REQUEST_CODE) {
             boolean result = true;
             for (int granted : grantResults) {
                 if (granted != PackageManager.PERMISSION_GRANTED) {

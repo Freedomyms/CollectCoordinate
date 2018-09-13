@@ -1,4 +1,4 @@
-package com.geocompass.collect.coordinate.activity;
+package com.geocompass.collect.util;
 
 import android.content.Context;
 import android.widget.Toast;

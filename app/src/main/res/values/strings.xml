@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">坐标采集</string>
+    <string name="gd_key">69ae7a7839ff95aa14e4255e39fcac65</string>
+    <string name="MQTTService_name">com.geocompass.mqtt.MQTTService</string>
 </resources>

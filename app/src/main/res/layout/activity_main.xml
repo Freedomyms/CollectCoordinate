@@ -99,13 +99,25 @@
                 android:background="@color/color_light_white"
                 android:textSize="16dp"
                 android:text="" />
+            <Button
+                android:id="@+id/btn_end_collect"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:layout_below="@+id/tv_service"
+                android:background="@color/color_light_white"
+                android:text="结束采集"
+                android:textColor="@color/color_blue"
+                android:textSize="23sp"
+                android:gravity="center" />
         </RelativeLayout>
 
     </ScrollView>
 <View
     android:id="@+id/view_bottom"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="200dp"
     android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

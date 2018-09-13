@@ -45,6 +45,7 @@ public class MQTTTool {
     private MQTTHandler mHandler;
     private MQTTService mService;
     List<String> mTopicList;
+    private boolean isBindService=false;
 
     public interface MQTTToolCallback {
         /**
@@ -143,21 +144,29 @@ public class MQTTTool {
                 mService.setPassWord(MQTT_PASSWORD);
                 mService.setWorkHandler(mHandler);
                 mService.connect();
+
+                isBindService=true;
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
                 Log.e(TAG,"服务连接失败");
+                isBindService=true;
             }
         };
         mContext.bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+        //mContext.startService(intent, serviceConnection);
+
     }
 
     /**
      * 解绑服务
      */
     public void unbindMqttService() {
-        mContext.unbindService(serviceConnection);
+        if(isBindService){
+            mContext.unbindService(serviceConnection);
+            isBindService=false;
+        }
     }
 
     private static class MQTTHandler extends Handler {
