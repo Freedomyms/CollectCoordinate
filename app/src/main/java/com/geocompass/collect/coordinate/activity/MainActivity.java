@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
@@ -69,17 +68,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private boolean isLinkService = true;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        int flags = WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
-        getWindow().addFlags(flags);
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE;
-        getWindow().setAttributes(params);
-
+        controlLockScreen();
         setContentView(R.layout.activity_main);
 
         initView(savedInstanceState);
@@ -145,7 +137,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
              **/
             @Override
             public void onLocationRecord(double lat, double lon) {
-                if (isLinkService) {
+         /*       if (isLinkService) {
                     recordTrackLine(lat, lon);
                     mCurLnglat = new LatLng(lat, lon);
                     double y = lat;
@@ -167,7 +159,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     //ToastUtils.showToast(MainActivity.this, "请输入可用的服务器地址！");
                     mTvService.setText("服务连接失败！");
-                }
+                }*/
             }
         });
         gdLocationUtils.startLocation();
@@ -266,6 +258,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mMqttTool.unbindMqttService();
                 ToastUtils.showToast(MainActivity.this, "结束采集");
                 mCount=0;
+                NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+                manager.cancel(Constants.NOTIFICATION_ID_1);
+
+                finish();
                 break;
         }
     }
@@ -307,6 +303,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         }
 
+    }
+    /**
+     *控制显示在锁屏界面
+     */
+    private void controlLockScreen(){
+        int flags = WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
+        getWindow().addFlags(flags);
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE;
+        getWindow().setAttributes(params);
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.geocompass.collect.coordinate.Constants;
 import com.geocompass.collect.coordinate.R;
 import com.geocompass.collect.util.AppUtils;
 import com.geocompass.collect.util.SharedPreferencesUtils;
+import com.geocompass.collect.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
