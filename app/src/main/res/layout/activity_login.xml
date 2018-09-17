@@ -108,12 +108,25 @@
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
-        android:background="@color/color_light_white"
+        android:background="@drawable/btn_bg_round_click"
         android:text="开始采集"
-        android:textColor="@color/color_blue"
+        android:textColor="@drawable/selector_btn_click_text_color"
         android:textSize="23sp"
         android:gravity="center" />
+    <com.geocompass.collect.view.ButtonTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:background="@color/color_white"
+        android:gravity="center"
+        android:text="开始采集"
+        android:textSize="23sp"
+        android:textColor="@color/color_blue"
+        app:corner="5dp"
+        app:pressBgc="@color/color_blue"
+        app:pressTxtColor="@color/color_white"
+        app:stroke="1px" />
 </LinearLayout>

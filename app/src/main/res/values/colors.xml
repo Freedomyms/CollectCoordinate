@@ -10,4 +10,6 @@
     <color name="color_blue">#13227a</color>
     <color name="color_header">#1777CB</color>
 
+    <drawable name="color_red">#fffa3d39</drawable>
+    <drawable name="color_green">#ff00adba</drawable>
 </resources>

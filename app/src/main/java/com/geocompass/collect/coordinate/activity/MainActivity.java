@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
              **/
             @Override
             public void onLocationRecord(double lat, double lon) {
-         /*       if (isLinkService) {
+                if (isLinkService) {
                     recordTrackLine(lat, lon);
                     mCurLnglat = new LatLng(lat, lon);
                     double y = lat;
@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     //ToastUtils.showToast(MainActivity.this, "请输入可用的服务器地址！");
                     mTvService.setText("服务连接失败！");
-                }*/
+                }
             }
         });
         gdLocationUtils.startLocation();
@@ -254,16 +254,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_end_collect:
-                stopService(new Intent(new Intent(this, MQTTService.class)));
-                mMqttTool.unbindMqttService();
+                finishServerLinked();
                 ToastUtils.showToast(MainActivity.this, "结束采集");
-                mCount=0;
-                NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-                manager.cancel(Constants.NOTIFICATION_ID_1);
-
                 finish();
                 break;
         }
+    }
+    private void finishServerLinked(){
+        mCount=0;
+        stopService(new Intent(new Intent(this, MQTTService.class)));
+        mMqttTool.unbindMqttService();
+        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        manager.cancel(Constants.NOTIFICATION_ID_1);
     }
     private void mapUiAndShowLocation() {
         mUiSettings = aMap.getUiSettings();
@@ -332,7 +334,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onDestroy();
         boolean isRun=AppUtils.isServiceRunning(MainActivity.this,this.getResources().getString(R.string.MQTTService_name));
         if(!isRun){
-            mCount=0;
+            finishServerLinked();
         }
         //Log.e("MainActivity",mCount+"次"+isRun);
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图

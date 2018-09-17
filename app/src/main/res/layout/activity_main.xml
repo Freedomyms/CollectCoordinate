@@ -106,9 +106,9 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
                 android:layout_below="@+id/tv_service"
-                android:background="@color/color_light_white"
+                android:background="@drawable/btn_bg_round_click"
                 android:text="结束采集"
-                android:textColor="@color/color_blue"
+                android:textColor="@drawable/selector_btn_click_text_color"
                 android:textSize="23sp"
                 android:gravity="center" />
         </RelativeLayout>

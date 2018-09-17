@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ButtonTextView">
+        <attr name="pressTxtColor" format="color"></attr>
+        <attr name="pressBgc" format="color"></attr>
+        <attr name="stroke" format="dimension"></attr>
+        <attr name="corner" format="dimension|fraction"></attr>
+    </declare-styleable>
+</resources>

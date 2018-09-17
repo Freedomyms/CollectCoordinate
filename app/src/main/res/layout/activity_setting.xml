@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -54,12 +55,12 @@
     <Button
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
-        android:background="@color/color_light_white"
+        android:background="@drawable/btn_bg_round_click"
         android:text="保 存"
-        android:textColor="@color/color_blue"
+        android:textColor="@drawable/selector_btn_click_text_color"
         android:textSize="23sp"
         android:gravity="center" />
 </LinearLayout>
